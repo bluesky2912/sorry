@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B0A10">
+  <title>PROJECT: MANANA — For Gooji ❤️</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & THEMES
+       ========================================================================== */
+    :root {
+      --bg: #0B0A10;
+      --bg-surface: #15121B;
+      --bg-card: #1c1726;
+      --blush: #F4A6BD;
+      --pink: #E97898;
+      --rose: #B94363;
+      --deep-rose: #8a2c47;
+      --cream: #FFF1E7;
+      --paper: #FFF8F0;
+      --lavender: #B9AEDE;
+      --gold: #D7BD82;
+      --text-dark: #2a1a22;
+      --text-muted: rgba(255, 241, 231, 0.7);
+      --font-body: 'DM Sans', 'Plus Jakarta Sans', sans-serif;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-hand: 'Caveat', cursive;
+      --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: clamp(16px, 1.1vw + 12px, 19px);
+      line-height: 1.7;
+      transition: background-color 1.4s ease, color 1.4s ease;
+      overflow-x: hidden;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body.lock {
+      overflow: hidden;
+    }
+
+    body.light {
+      color: var(--text-dark);
+    }
+
+    body.light .hand {
+      color: var(--rose);
+    }
+
+    body.light #toast {
+      color: var(--rose);
+    }
+
+    button, input {
+      font-family: inherit;
+      color: inherit;
+      outline: none;
+    }
+
+    /* ==========================================================================
+       TYPOGRAPHY
+       ========================================================================== */
+    .hand {
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+      line-height: 1.25;
+      color: var(--blush);
+      display: inline-block;
+      transform: rotate(-1.5deg);
+    }
+
+    .big {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: clamp(2.5rem, 8vw, 5.8rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .mid {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(1.4rem, 3.6vw, 2.5rem);
+      line-height: 1.35;
+    }
+
+    .soft {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      font-size: clamp(1.35rem, 3.4vw, 2.2rem);
+      line-height: 1.45;
+    }
+
+    .sm {
+      font-size: 0.95rem;
+      opacity: 0.75;
+      max-width: 28rem;
+    }
+
+    /* ==========================================================================
+       BACKGROUND PARTICLES & AMBIENCE
+       ========================================================================== */
+    #stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      transition: opacity 1.5s ease;
+    }
+
+    body.light #stars {
+      opacity: 0.08;
+    }
+
+    #stars i {
+      position: absolute;
+      background: var(--cream);
+      border-radius: 50%;
+      animation: twinkle 5s ease-in-out infinite;
+      box-shadow: 0 0 6px rgba(255, 241, 231, 0.6);
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 0.9; transform: scale(1.3); }
+    }
+
+    /* Floating Heart Petals in background */
+    #petals {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .floating-petal {
+      position: absolute;
+      font-size: 1.1rem;
+      opacity: 0.25;
+      color: var(--pink);
+      animation: floatUpward linear infinite;
+      filter: blur(0.5px);
+    }
+
+    @keyframes floatUpward {
+      0% {
+        transform: translateY(105vh) translateX(0) rotate(0deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.35;
+      }
+      85% {
+        opacity: 0.25;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(60px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Radial Glow FX */
+    #glowfx {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 1.8s ease;
+      background: radial-gradient(circle at 50% 50%, rgba(233, 120, 152, 0.35), transparent 70%);
+    }
+
+    #glowfx.on {
+      opacity: 1;
+    }
+
+    /* Sparkle & heart trail */
+    .trail-heart {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: none;
+      animation: heartFly 1.2s var(--ease-smooth) forwards;
+      color: var(--blush);
+      font-size: 14px;
+      line-height: 1;
+      filter: drop-shadow(0 0 6px rgba(244, 166, 189, 0.8));
+    }
+
+    @keyframes heartFly {
+      0% {
+        transform: translate(0, 0) scale(0.6) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(1.3) rotate(var(--rt));
+        opacity: 0;
+      }
+    }
+
+    /* ==========================================================================
+       INTRO / WELCOME SCREEN
+       ========================================================================== */
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.3rem;
+      text-align: center;
+      background: radial-gradient(circle at 50% 40%, #1a1222 0%, #0b0a10 85%);
+      transition: opacity 1.2s var(--ease-smooth), transform 1.2s var(--ease-smooth);
+      padding: 1.5rem;
+    }
+
+    #intro.gone {
+      opacity: 0;
+      transform: scale(1.04);
+      pointer-events: none;
+    }
+
+    .intro-badge {
+      letter-spacing: 0.35em;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--blush);
+      text-transform: uppercase;
+      background: rgba(244, 166, 189, 0.1);
+      padding: 0.4rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(244, 166, 189, 0.25);
+    }
+
+    .intro-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 500;
+      color: var(--cream);
+    }
+
+    .intro-mascot {
+      width: 80px;
+      height: 80px;
+      margin: 0.5rem 0;
+      animation: floatMascot 3s ease-in-out infinite;
+      filter: drop-shadow(0 6px 16px rgba(233, 120, 152, 0.4));
+    }
+
+    @keyframes floatMascot {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    #bar {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.88rem;
+      color: var(--blush);
+      letter-spacing: 0.05em;
+      min-height: 1.4em;
+    }
+
+    #stat {
+      font-size: 0.95rem;
+      color: var(--cream);
+      opacity: 0.85;
+      min-height: 1.4em;
+    }
+
+    /* Wax seal button */
+    .seal-wrap {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .seal {
+      width: 104px;
+      height: 104px;
+      border: none;
+      cursor: pointer;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #ec7b94, #B94363 60%, #6e1c32);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--cream);
+      box-shadow: 0 0 0 8px rgba(185, 67, 99, 0.2), 0 12px 30px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.85) rotate(-3deg);
+      transition: opacity 0.8s ease, transform 0.4s var(--ease-bounce), box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+    }
+
+    .seal.on {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) rotate(-3deg);
+      animation: sealPulse 2.4s ease-in-out infinite;
+    }
+
+    .seal:hover {
+      transform: scale(1.08) rotate(0deg);
+      box-shadow: 0 0 0 12px rgba(185, 67, 99, 0.35), 0 16px 36px rgba(233, 120, 152, 0.45);
+    }
+
+    .seal-heart {
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    @keyframes sealPulse {
+      0%, 100% { box-shadow: 0 0 0 8px rgba(185, 67, 99, 0.2), 0 12px 30px rgba(0, 0, 0, 0.5); }
+      50% { box-shadow: 0 0 0 14px rgba(233, 120, 152, 0.35), 0 16px 34px rgba(233, 120, 152, 0.4); }
+    }
+
+    .seal-hint {
+      font-size: 0.85rem;
+      color: var(--blush);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .seal.on + .seal-hint {
+      opacity: 0.9;
+    }
+
+    /* ==========================================================================
+       FLOATING MUSIC CONTROLLER
+       ========================================================================== */
+    #music-player {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 90;
+      background: rgba(21, 18, 27, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(244, 166, 189, 0.25);
+      border-radius: 999px;
+      padding: 0.45rem 1rem 0.45rem 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--cream);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(233, 120, 152, 0.2);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s var(--ease-smooth), border-color 0.3s ease, box-shadow 0.3s ease;
+      font-size: 0.82rem;
+    }
+
+    .ready #music-player {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #music-player:hover {
+      border-color: var(--pink);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 20px rgba(233, 120, 152, 0.4);
+    }
+
+    /* Rotating vinyl record inside music player */
+    .vinyl-disc {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #B94363 20%, #15121B 25%, #2a1a22 65%, #0B0A10 100%);
+      border: 2px solid var(--blush);
+      display: grid;
+      place-items: center;
+      position: relative;
+      animation: spinVinyl 4s linear infinite;
+      animation-play-state: paused;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    #music-player.playing .vinyl-disc {
+      animation-play-state: running;
+    }
+
+    .vinyl-center {
+      width: 8px;
+      height: 8px;
+      background: var(--cream);
+      border-radius: 50%;
+    }
+
+    @keyframes spinVinyl {
+      to { transform: rotate(360deg); }
+    }
+
+    .music-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.25;
+    }
+
+    .music-song {
+      font-weight: 500;
+      color: var(--cream);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .music-artist {
+      font-size: 0.7rem;
+      color: var(--blush);
+      opacity: 0.8;
+    }
+
+    /* Animated sound bars */
+    .sound-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2.5px;
+      height: 14px;
+      margin-left: 0.3rem;
+    }
+
+    .sound-bar {
+      width: 2.5px;
+      background: var(--pink);
+      border-radius: 2px;
+      height: 3px;
+      transition: height 0.2s ease;
+    }
+
+    #music-player.playing .sound-bar:nth-child(1) { animation: soundWave 0.8s ease-in-out infinite alternate; }
+    #music-player.playing .sound-bar:nth-child(2) { animation: soundWave 0.6s ease-in-out infinite 0.2s alternate; }
+    #music-player.playing .sound-bar:nth-child(3) { animation: soundWave 0.9s ease-in-out infinite 0.4s alternate; }
+
+    @keyframes soundWave {
+      0% { height: 3px; }
+      100% { height: 14px; }
+    }
+
+    /* ==========================================================================
+       MAIN CONTENT & SECTIONS
+       ========================================================================== */
+    main {
+      opacity: 0;
+      transition: opacity 1.8s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ready main {
+      opacity: 1;
+    }
+
+    section {
+      position: relative;
+      padding: 14vh 7vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      min-height: 80vh;
+      justify-content: center;
+    }
+
+    .beat {
+      min-height: 65vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 1.2rem;
+      width: 100%;
+      max-width: 40rem;
+    }
+
+    /* Scroll Reveals */
+    .rv {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 1.2s var(--ease-smooth), transform 1.2s var(--ease-smooth);
+      will-change: opacity, transform;
+    }
+
+    .rv.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 4.5rem;
+      transform: translateX(-50%) translateY(20px);
+      font-family: var(--font-hand);
+      font-weight: 700;
+      font-size: 1.7rem;
+      color: var(--blush);
+      background: rgba(21, 18, 27, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 0.6rem 1.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(244, 166, 189, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.4s ease, transform 0.4s var(--ease-bounce);
+      pointer-events: none;
+      z-index: 95;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Cute Tiny Interactive Button */
+    .tiny {
+      background: rgba(244, 166, 189, 0.15);
+      border: 1px solid rgba(244, 166, 189, 0.3);
+      color: var(--blush);
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      transition: transform 0.3s var(--ease-bounce), background-color 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+      margin-left: 0.3rem;
+    }
+
+    .tiny:hover {
+      transform: scale(1.25);
+      background: rgba(244, 166, 189, 0.3);
+    }
+
+    /* ==========================================================================
+       APOLOGY SECTION (Sticky Papers)
+       ========================================================================== */
+    .conf .big {
+      color: var(--blush);
+    }
+
+    .conf .mid {
+      color: var(--cream);
+    }
+
+    .papers-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3.5rem;
+      margin-top: 2rem;
+    }
+
+    .paper {
+      position: relative;
+      width: min(32rem, 90vw);
+      background: var(--paper);
+      color: var(--text-dark);
+      padding: 2.2rem 2.2rem 2.4rem;
+      text-align: left;
+      border-radius: 6px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.08);
+      transform: rotate(var(--r, 0deg));
+      transition: transform 0.4s var(--ease-smooth), box-shadow 0.4s ease;
+    }
+
+    .paper:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow: 0 20px 42px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Washi tape on top */
+    .paper::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(var(--tape-r, -2deg));
+      width: 80px;
+      height: 24px;
+      background: rgba(215, 189, 130, 0.55);
+      border-left: 2px dashed rgba(255, 255, 255, 0.4);
+      border-right: 2px dashed rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .paper .paper-num {
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      color: var(--rose);
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .paper h3 {
+      font-family: var(--font-serif);
+      font-size: 1.85rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #1a1222;
+    }
+
+    .paper p {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #3b2c34;
+    }
+
+    .paper .paper-note {
+      font-family: var(--font-hand);
+      font-size: 1.55rem;
+      color: var(--rose);
+      margin-top: 1rem;
+      line-height: 1.3;
+    }
+
+    /* ==========================================================================
+       BRAIN SCRAPS SECTION
+       ========================================================================== */
+    .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.8rem;
+      max-width: 62rem;
+      margin: 3.5rem 0;
+    }
+
+    .scrap {
+      background: var(--bg-surface);
+      border: 1px dashed rgba(244, 166, 189, 0.35);
+      border-radius: 12px;
+      padding: 1.4rem 1.6rem;
+      width: 16.5rem;
+      text-align: left;
+      transform: rotate(var(--r, 0deg));
+      transition: transform 0.4s var(--ease-bounce), border-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .scrap:hover {
+      transform: rotate(0deg) scale(1.05);
+      border-color: var(--blush);
+      box-shadow: 0 14px 28px rgba(233, 120, 152, 0.25);
+    }
+
+    .scrap b {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .scrap.grow.in {
+      transform: rotate(var(--r, 0deg)) scale(1.08);
+      border-color: var(--pink);
+    }
+
+    /* ==========================================================================
+       OUR LITTLE WORLD (POLAROID PHOTO WALL)
+       ========================================================================== */
+    #memory {
+      padding-top: 12vh;
+      padding-bottom: 16vh;
+    }
+
+    .wall {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3.5rem 2.8rem;
+      max-width: 68rem;
+      margin-top: 5vh;
+    }
+
+    .pol {
+      width: min(17.5rem, 84vw);
+      background: #ffffff;
+      color: var(--text-dark);
+      padding: 0.9rem 0.9rem 1.1rem;
+      border-radius: 4px;
+      box-shadow: 0 14px 30px rgba(42, 26, 34, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+      transform: rotate(var(--r, 0deg)) translateY(var(--py, 0px));
+      transition: transform 0.4s var(--ease-bounce), box-shadow 0.4s ease;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    /* Polaroid washi tape decoration */
+    .pol::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 35%;
+      width: 55px;
+      height: 18px;
+      background: rgba(244, 166, 189, 0.55);
+      border-left: 2px dashed rgba(255, 255, 255, 0.5);
+      border-right: 2px dashed rgba(255, 255, 255, 0.5);
+      transform: rotate(-3deg);
+      z-index: 2;
+    }
+
+    .pol:hover {
+      transform: rotate(0deg) translateY(-10px) scale(1.03);
+      box-shadow: 0 22px 45px rgba(233, 120, 152, 0.32), 0 4px 12px rgba(0, 0, 0, 0.12);
+      z-index: 10;
+    }
+
+    .ph {
+      aspect-ratio: 1 / 1.05;
+      background: linear-gradient(135deg, #fceef2, #e8b6c4);
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .ph img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-smooth);
+    }
+
+    .pol:hover .ph img {
+      transform: scale(1.06);
+    }
+
+    .pol figcaption {
+      margin-top: 0.8rem;
+      color: var(--rose) !important;
+      font-family: var(--font-hand);
+      font-size: 1.55rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .photo-hint {
+      font-size: 0.72rem;
+      color: #8a6c76;
+      margin-top: 0.2rem;
+      opacity: 0.8;
+    }
+
+    /* Lightbox Modal for Photos */
+    #photo-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(11, 10, 16, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-smooth);
+    }
+
+    #photo-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      color: var(--text-dark);
+      padding: 1rem 1rem 1.4rem;
+      border-radius: 8px;
+      max-width: min(90vw, 480px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7);
+      transform: scale(0.9);
+      transition: transform 0.4s var(--ease-bounce);
+      text-align: center;
+      position: relative;
+    }
+
+    #photo-modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-img-wrap {
+      width: 100%;
+      border-radius: 4px;
+      overflow: hidden;
+      max-height: 65vh;
+    }
+
+    .modal-img-wrap img {
+      width: 100%;
+      height: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .modal-caption {
+      margin-top: 0.9rem;
+      font-family: var(--font-hand);
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--rose);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--rose);
+      color: #fff;
+      border: 2px solid #fff;
+      font-size: 1.2rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s var(--ease-bounce);
+    }
+
+    .modal-close:hover {
+      transform: scale(1.15) rotate(90deg);
+    }
+
+    /* ==========================================================================
+       INTERACTIVE GAME WINDOW
+       ========================================================================== */
+    .win {
+      width: min(30rem, 92vw);
+      border: 2px solid var(--blush);
+      background: var(--bg-surface);
+      text-align: left;
+      font-family: ui-monospace, Consolas, monospace;
+      box-shadow: 8px 8px 0 var(--rose), 0 16px 40px rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+
+    .win .bar {
+      background: linear-gradient(90deg, var(--blush), var(--pink));
+      color: var(--bg);
+      padding: 0.4rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .win .bd {
+      padding: 1.6rem 1.4rem;
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .opts {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .opt {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 6px;
+      padding: 0.85rem 1.1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
+      font-family: inherit;
+    }
+
+    .opt:hover {
+      border-color: var(--blush);
+      background: rgba(244, 166, 189, 0.15);
+      transform: translateX(4px);
+    }
+
+    .opt span {
+      font-size: 1.5rem;
+    }
+
+    #res {
+      min-height: 4.8rem;
+      color: var(--blush);
+      font-size: 1rem;
+      line-height: 1.5;
+      padding: 0.5rem 0;
+    }
+
+    #res.show {
+      animation: pop 0.5s var(--ease-bounce) both;
+    }
+
+    #res em {
+      display: block;
+      font-style: normal;
+      color: var(--cream);
+      margin-top: 0.4rem;
+      font-size: 0.92rem;
+      opacity: 0.9;
+    }
+
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       SECRET LOVE ENVELOPE & LETTER
+       ========================================================================== */
+    .env {
+      position: relative;
+      width: min(22rem, 86vw);
+      height: 14rem;
+      background: #e8c9c0;
+      border-radius: 8px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      margin: 1.5rem 0 2.2rem;
+      transform: rotate(1deg);
+      perspective: 800px;
+    }
+
+    .flap {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 62%;
+      background: #d8b0a6;
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+
+    .env.open .flap {
+      transform: rotateX(180deg);
+    }
+
+    .env .lk {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      font-size: 2.2rem;
+      transition: opacity 0.8s ease, transform 0.4s var(--ease-bounce);
+    }
+
+    .env.open .lk {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+
+    #pw {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      text-align: center;
+      letter-spacing: 0.6em;
+      width: 13rem;
+      padding: 0.6rem 0.8rem;
+      outline: none;
+      font-size: 1.3rem;
+      transition: box-shadow 0.4s ease, border-color 0.4s ease;
+      color: var(--cream);
+    }
+
+    #pw:focus {
+      border-color: var(--blush);
+      box-shadow: 0 0 15px rgba(244, 166, 189, 0.4);
+    }
+
+    #pw.ok {
+      border-color: var(--pink);
+      box-shadow: 0 0 20px rgba(233, 120, 152, 0.6);
+    }
+
+    .shake {
+      animation: shake 0.4s var(--ease-bounce);
+    }
+
+    @keyframes shake {
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .hint-btn {
+      background: none;
+      border: none;
+      color: var(--blush);
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: underline;
+      opacity: 0.8;
+      margin-top: 0.5rem;
+    }
+
+    .letter {
+      background: var(--paper);
+      color: var(--text-dark);
+      padding: 2.4rem 2.2rem;
+      max-width: 32rem;
+      width: min(32rem, 90vw);
+      text-align: left;
+      border-radius: 6px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      transform: rotate(-1deg);
+      font-family: var(--font-hand);
+      font-weight: 600;
+      font-size: 1.65rem;
+      line-height: 1.45;
+      margin-top: 1rem;
+    }
+
+    /* ==========================================================================
+       MOON & REFLECTION
+       ========================================================================== */
+    .moon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      box-shadow: inset -10px -4px 0 0 var(--cream);
+      cursor: pointer;
+      margin-bottom: 3vh;
+      opacity: 0.9;
+      transition: transform 0.4s var(--ease-bounce), filter 0.4s ease;
+    }
+
+    .moon:hover {
+      transform: scale(1.2) rotate(15deg);
+      filter: drop-shadow(0 0 12px rgba(255, 241, 231, 0.8));
+    }
+
+    .heart-pulse {
+      font-size: 2.2rem;
+      filter: drop-shadow(0 0 16px var(--pink));
+      animation: heartBeat 2.5s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    @keyframes heartBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* ==========================================================================
+       CHOICES: WILL YOU TALK TO ME?
+       ========================================================================== */
+    .choices {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 2.5rem 0;
+      position: relative;
+    }
+
+    .choice {
+      background: var(--bg-surface);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 16px;
+      padding: 1.2rem 2.4rem;
+      cursor: pointer;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      font-size: 1.05rem;
+      transition: border-color 0.3s ease, transform 0.3s var(--ease-bounce), background-color 0.3s ease;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .choice:hover {
+      border-color: var(--pink);
+      background: rgba(233, 120, 152, 0.15);
+      transform: translateY(-4px) scale(1.04);
+    }
+
+    #yes {
+      background: linear-gradient(135deg, rgba(233, 120, 152, 0.25), rgba(185, 67, 99, 0.4));
+      border-color: var(--blush);
+      color: var(--cream);
+      box-shadow: 0 10px 28px rgba(233, 120, 152, 0.3);
+    }
+
+    #yes:hover {
+      background: linear-gradient(135deg, rgba(233, 120, 152, 0.4), rgba(185, 67, 99, 0.6));
+      box-shadow: 0 14px 34px rgba(233, 120, 152, 0.5);
+    }
+
+    #no {
+      position: relative;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    #ans {
+      margin-top: 1.5rem;
+      min-height: 3rem;
+      color: var(--blush);
+      font-family: var(--font-hand);
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    /* ==========================================================================
+       FINAL STATUS SECTION
+       ========================================================================== */
+    .stat {
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 0.5rem 2rem;
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: clamp(0.85rem, 3.4vw, 1.05rem);
+      text-align: left;
+      margin: 2.5rem 0;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 1.4rem 1.8rem;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .stat span:nth-child(odd) {
+      font-weight: 600;
+      opacity: 0.85;
+      color: #3b2c34;
+    }
+
+    .stat span:nth-child(even) {
+      color: var(--rose);
+      font-weight: 700;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 700px) {
+      section {
+        padding: 10vh 5vw;
+      }
+      .wall {
+        gap: 2.4rem 1.5rem;
+      }
+      .paper {
+        padding: 1.6rem 1.4rem;
+      }
+      #music-player {
+        right: 12px;
+        bottom: 12px;
+        padding: 0.35rem 0.8rem 0.35rem 0.4rem;
+        font-size: 0.75rem;
+      }
+      .vinyl-disc {
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition-duration: 0.01s !important;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body class="lock">
+  <!-- Background Ambience -->
+  <div id="stars"></div>
+  <div id="petals"></div>
+  <div id="glowfx"></div>
+  <div id="toast"></div>
+
+  <!-- Floating Romantic Music Player -->
+  <div id="music-player" role="button" aria-label="Play or pause How Long Will I Love You" title="Click to play/pause music">
+    <div class="vinyl-disc">
+      <div class="vinyl-center"></div>
+    </div>
+    <div class="music-info">
+      <div class="music-song">
+        <span>How Long Will I Love You</span>
+        <div class="sound-bars">
+          <div class="sound-bar"></div>
+          <div class="sound-bar"></div>
+          <div class="sound-bar"></div>
+        </div>
+      </div>
+      <div class="music-artist">Ellie Goulding / Jon Boden ♫</div>
+    </div>
+  </div>
+
+  <!-- Audio Element with multiple sources for reliability -->
+  <audio id="aud" preload="auto" loop>
+    <source src="how-long-will-i-love-you.mp3" type="audio/mpeg">
+    <source src="Jon_Boden_Sam_Sweeney_Ben_Coleman_-_How_Long_Will_I_Love_You_(mp3.pm).mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- INTRO / WELCOME SCREEN -->
+  <div id="intro">
+    <div class="intro-badge">PROJECT: MANANA</div>
+    <h2 class="intro-title">A Very Important Mission</h2>
+
+    <!-- Cute Animated SVG Mascot -->
+    <svg class="intro-mascot" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="58" rx="34" ry="30" fill="#FFF1E7" />
+      <!-- Bear Ears -->
+      <circle cx="26" cy="32" r="14" fill="#FFF1E7" />
+      <circle cx="26" cy="32" r="8" fill="#F4A6BD" />
+      <circle cx="74" cy="32" r="14" fill="#FFF1E7" />
+      <circle cx="74" cy="32" r="8" fill="#F4A6BD" />
+      <!-- Eyes -->
+      <ellipse cx="38" cy="54" rx="4" ry="5" fill="#2A1A22" />
+      <circle cx="39" cy="52" r="1.5" fill="#FFFFFF" />
+      <ellipse cx="62" cy="54" rx="4" ry="5" fill="#2A1A22" />
+      <circle cx="63" cy="52" r="1.5" fill="#FFFFFF" />
+      <!-- Blushing Cheeks -->
+      <ellipse cx="30" cy="62" rx="6" ry="3.5" fill="#F4A6BD" opacity="0.8" />
+      <ellipse cx="70" cy="62" rx="6" ry="3.5" fill="#F4A6BD" opacity="0.8" />
+      <!-- Cute Nose & Smile -->
+      <ellipse cx="50" cy="59" rx="3" ry="2" fill="#B94363" />
+      <path d="M46 63C48 66 52 66 54 63" stroke="#2A1A22" stroke-width="2" stroke-linecap="round" />
+      <!-- Heart in Hands -->
+      <path d="M50 78C50 78 40 70 40 64C40 60 44 57 48 60L50 62L52 60C56 57 60 60 60 64C60 70 50 78 50 78Z" fill="#E97898" />
+    </svg>
+
+    <p class="hand">“I made something for you.”</p>
+    <div id="bar">░░░░░░░░░░░░░░░░░░ 0%</div>
+    <div id="stat">&nbsp;</div>
+
+    <div class="seal-wrap">
+      <button class="seal" id="open" aria-label="Open Project Manana">
+        <span class="seal-heart">❤️</span>
+        <span>OPEN</span>
+      </button>
+      <div class="seal-hint">Tap to open with music 🎶</div>
+    </div>
+  </div>
+
+  <!-- MAIN SCROLLABLE CONTENT -->
+  <main>
+    <!-- Section 1: Hey -->
+    <section id="hey" data-bg="#0B0A10">
+      <div class="beat">
+        <h1 class="big rv">Hey, Gooji.</h1>
+        <p class="hand rv" style="transition-delay:0.8s">scroll down slowly ↓</p>
+      </div>
+      <div class="beat">
+        <p class="mid rv">I could've sent you another paragraph.</p>
+      </div>
+      <div class="beat">
+        <p class="mid rv">I could've said</p>
+        <p class="big rv" style="color:var(--blush)">“I'm sorry”</p>
+        <p class="mid rv">fifty times.</p>
+      </div>
+      <div class="beat">
+        <p class="mid rv">But I wanted to actually do something.</p>
+      </div>
+      <div class="beat">
+        <p class="hand rv" style="font-size:clamp(1.8rem,4vw,2.6rem)">
+          so... I made this little world for you.
+          <button class="tiny" data-say="I love you more than anything ❤️" aria-label="Love message">♡</button>
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 2: Confession / Apology Intro -->
+    <section class="conf" data-bg="#1c0e18">
+      <div class="beat">
+        <h2 class="big rv">I MESSED UP.</h2>
+      </div>
+      <div class="beat">
+        <p class="mid rv">No excuses.</p>
+        <p class="mid rv">No “but I didn't mean it.”</p>
+        <p class="mid rv">No blaming the situation.</p>
+      </div>
+      <div class="beat">
+        <p class="big rv">I was wrong.</p>
+      </div>
+      <div class="beat">
+        <p class="mid rv" style="max-width:32rem">
+          And I know saying sorry doesn't magically erase how I made you feel.
+        </p>
+      </div>
+      <div class="beat">
+        <p class="mid rv" style="color:var(--blush)">
+          I'm genuinely sorry, baby.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 3: Apology Papers -->
+    <section id="apology" data-bg="#efc1cd" data-l="1">
+      <p class="hand rv" style="font-size:2.4rem; margin-bottom: 2rem;">my actual apology</p>
+
+      <div class="papers-container">
+        <article class="paper rv" style="--r:-1.5deg; --tape-r:-3deg">
+          <p class="paper-num">01</p>
+          <h3>What I did</h3>
+          <p>I'm sorry for the way I talked to you. I was rude, and I know I shouldn't have spoken to you that way.</p>
+        </article>
+
+        <article class="paper rv" style="--r:1.2deg; --tape-r:2deg">
+          <p class="paper-num">02</p>
+          <h3>What I realised</h3>
+          <p>I realised that the things I said could make you feel really bad and unloved.</p>
+          <p class="paper-note">You never deserved that from me.</p>
+        </article>
+
+        <article class="paper rv" style="--r:-0.8deg; --tape-r:-1.5deg">
+          <p class="paper-num">03</p>
+          <h3>What I'll change</h3>
+          <p>Next time, instead of talking to you that way, I'll slow down, understand you properly, and talk to you with the love and respect you deserve.</p>
+          <p class="paper-note">Not just saying it.<br>Actually doing it.</p>
+        </article>
+      </div>
+
+      <p class="hand rv" style="font-size:2.8rem; margin-top: 5rem;">sorry, baby. ❤️</p>
+    </section>
+
+    <!-- Section 4: Brain Scraps -->
+    <section id="brain" data-bg="#0B0A10">
+      <h2 class="mid rv" style="max-width:34rem">Things my dumb brain should already know...</h2>
+      <p class="sm rv" style="margin-top:1rem">Apparently I needed a whole website to remember these. 😭</p>
+
+      <div class="wrap">
+        <div class="scrap rv" style="--r:-2deg">
+          <b>❤️</b>
+          <p>Your feelings matter. Always.</p>
+        </div>
+        <div class="scrap rv" style="--r:1.5deg">
+          <b>🫶</b>
+          <p>Understanding you is infinitely more important than winning an argument.</p>
+        </div>
+        <div class="scrap rv" style="--r:-1deg">
+          <b>🥺</b>
+          <p>“Sorry” means nothing if I keep repeating the same mistake.</p>
+        </div>
+        <div class="scrap rv" style="--r:2.5deg">
+          <b>🌷</b>
+          <p>You're allowed to be angry with me.</p>
+        </div>
+        <div class="scrap rv grow" style="--r:-1.5deg">
+          <b>❤️‍🩹</b>
+          <p>I really, really don't like being the reason you're sad.</p>
+        </div>
+      </div>
+
+      <p class="mid rv" style="max-width:36rem; margin-top:4vh">
+        I should've known all of this without having to hurt you first.
+      </p>
+    </section>
+
+    <!-- Section 5: Memory Wall (Polaroids with Real Photos) -->
+    <section id="memory" data-bg="#FFF1E7" data-l="1">
+      <h2 class="big rv" style="color:var(--text-dark)">Our little world.</h2>
+      <p class="hand rv" style="font-size:2.2rem; color:var(--rose)">A few things I never want to forget.</p>
+
+      <div class="wall" id="wall"></div>
+    </section>
+
+    <!-- Section 6: Cute Game Window -->
+    <section id="game" data-bg="#0B0A10">
+      <div class="beat"><p class="big rv">OKAY.</p></div>
+      <div class="beat"><p class="big rv">SERIOUS STUFF OVER.</p></div>
+      <div class="beat">
+        <p class="hand rv">I have a major problem.</p>
+        <div class="win rv">
+          <div class="bar">
+            <span>SYSTEM ALERT: MISSION MANANA</span>
+            <span>_ ☐ ✕</span>
+          </div>
+          <div class="bd">
+            <p><strong>MY GIRLFRIEND</strong><br>IS<br><strong style="color:var(--pink)">VERY ANGRY AT ME.</strong></p>
+            <p>Severity: <span style="color:var(--rose)">██████████</span> (CRITICAL)</p>
+            <p>OBJECTIVE:<br><b style="color:var(--blush); font-size:1.1rem">MAKE HER SMILE.</b></p>
+            <div class="opts">
+              <button class="opt" data-k="s"><span>🥺</span> I'm truly sorry</button>
+              <button class="opt" data-k="l"><span>❤️</span> I love you with all my heart</button>
+              <button class="opt" data-k="i"><span>🫠</span> I'm a certified idiot</button>
+              <button class="opt" data-k="h"><span>🍫</span> Unlimited hugs & snacks forever</button>
+            </div>
+            <div id="res"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 7: Secret Love Envelope -->
+    <section id="secret" data-bg="#0B0A10">
+      <div class="beat" style="min-height:0">
+        <p class="mid rv">🔒 A LITTLE SECRET</p>
+        <div class="env rv" id="env">
+          <div class="flap"></div>
+          <div class="lk" id="lk">🔒</div>
+        </div>
+        <p class="rv" style="max-width:28rem">There's something here for you.<br>You'll need the password.</p>
+        <input id="pw" class="rv" inputmode="numeric" maxlength="6" autocomplete="off" aria-label="password" placeholder="••••••">
+        <p class="hand rv" id="hint">You already know it.</p>
+        <button class="hint-btn rv" id="hint-toggle">Need a hint? 🤍</button>
+      </div>
+
+      <div id="after" hidden>
+        <div class="beat" style="min-height:35vh">
+          <p class="mid rv" style="color:var(--blush)">ACCESS GRANTED ❤️</p>
+          <p class="rv">Okay...</p>
+          <p class="hand rv" style="font-size:2.4rem">This one is only for you.</p>
+        </div>
+        <div class="letter rv">
+          <div id="secretMsg">
+            gooji,<br><br>
+            I don't want you to forgive me because I made a cute website.<br><br>
+            I want you to forgive me when you genuinely feel that I'm sorry.<br><br>
+            I know I made a mistake.<br><br>
+            I can't change what happened.<br><br>
+            But I can change what I do next.<br><br>
+            And I want to do better for you.<br><br>
+            Always yours. ❤️
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Soft Reflection -->
+    <section id="peak" data-bg="#0B0A10">
+      <div class="beat">
+        <div class="moon rv" id="moon" role="button" aria-label="Click the moon"></div>
+        <p class="soft rv">Gooji,</p>
+      </div>
+      <div class="beat">
+        <p class="soft rv">I don't want you to forgive me just because I made a cute website.</p>
+      </div>
+      <div class="beat">
+        <p class="soft rv">I want you to forgive me when you genuinely feel that I'm sorry.</p>
+      </div>
+      <div class="beat">
+        <p class="soft rv">I know I made a mistake.</p>
+        <p class="soft rv" style="transition-delay:0.8s; opacity:0.8">I can't change what happened.</p>
+      </div>
+      <div class="beat">
+        <p class="soft rv">But I can change what I do next.</p>
+      </div>
+      <div class="beat">
+        <p class="soft rv">And I want to do better for you.</p>
+      </div>
+      <div class="beat">
+        <p class="soft rv">I love you.</p>
+        <p class="soft rv" style="transition-delay:1s">I'm sorry.</p>
+        <p class="soft rv" style="transition-delay:2s">And yes...</p>
+        <p class="hand rv" style="transition-delay:3s; font-size:2.4rem">
+          I'm still going to annoy you until you smile again. ❤️
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 9: The Big Question -->
+    <section id="ask" data-bg="#0B0A10">
+      <div class="beat">
+        <div class="heart-pulse rv">❤️</div>
+        <p class="mid rv">So...</p>
+      </div>
+      <div class="beat" style="min-height:75vh">
+        <h2 class="big rv" style="font-size:clamp(2.4rem, 7vw, 4.8rem)">
+          WILL YOU PLEASE<br>TALK TO ME?
+        </h2>
+        <div class="choices rv">
+          <button class="choice" id="yes">❤️ YES</button>
+          <button class="choice" id="no">😤 NOT YET</button>
+        </div>
+        <div id="ans"></div>
+      </div>
+    </section>
+
+    <!-- Section 10: Mission Status -->
+    <section id="status" data-bg="#FFF1E7" data-l="1">
+      <div class="wall" id="last" style="margin-top:0"></div>
+      <p class="hand rv" style="font-size:2.4rem; color:var(--rose); margin-top:2rem">MISSION STATUS</p>
+
+      <div class="stat rv">
+        <span>Her anger</span><span>█████░░░░░ (melting...)</span>
+        <span>My regret</span><span>██████████ (100%)</span>
+        <span>My love</span><span>███████████∞ (infinite)</span>
+        <span>My stupidity</span><span>██████████ (working on it!)</span>
+      </div>
+
+      <p class="rv" style="letter-spacing:0.25em; font-size:0.95rem; font-weight:600; color:#3b2c34">
+        PROJECT: MANANA<br>IN PROGRESS ❤️
+      </p>
+      <p class="big rv" style="font-size:clamp(2.2rem, 6vw, 4.2rem); margin-top:8vh; font-family:var(--font-hand); color:var(--rose)">
+        Now come talk to me, Gooji.
+      </p>
+      <p class="rv sm" style="margin-top:2rem; font-size:1.15rem; color:#4a3540">I miss you so much.</p>
+      <p class="mid rv" style="margin:1.5rem 0 8vh; color:var(--rose); font-weight:600">
+        And finally:<br>I love you.
+      </p>
+    </section>
+  </main>
+
+  <!-- Photo Lightbox Modal -->
+  <div id="photo-modal" role="dialog" aria-modal="true" aria-label="Enlarged photo">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close" aria-label="Close photo preview">✕</button>
+      <div class="modal-img-wrap">
+        <img id="modal-img" src="" alt="Enlarged memory">
+      </div>
+      <div class="modal-caption" id="modal-caption"></div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // =========================================================================
+    // CONFIGURATION & ASSETS
+    // =========================================================================
+    // Real photos mapped with fallback to original filenames
+    const PHOTOS = [
+      { src: 'photo1.jpg', fallback: 'fav person.jpeg', cap: 'my favourite person ❤️' },
+      { src: 'photo2.jpg', fallback: 'smile.jpeg', cap: 'look at that smile.' },
+      { src: 'photo3.jpg', fallback: 'fav mempry.jpeg', cap: 'one of my favourite memories.' },
+      { src: 'photo4.jpg', fallback: 'pritty.jpeg', cap: 'you were so pretty here.' },
+      { src: 'photo5.jpg', fallback: 'happy idiot.jpeg', cap: 'this idiot was happy.' },
+      { src: 'photo6.jpg', fallback: 'still rember.jpeg', cap: 'I still remember this.' }
+    ];
+
+    const PASSWORD = '190125';
+
+    // Helper functions
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => document.querySelectorAll(selector);
+    const body = document.body;
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const randomRange = (min, max) => min + Math.random() * (max - min);
+
+    // =========================================================================
+    // BACKGROUND AMBIENCE (Stars & Petals)
+    // =========================================================================
+    // Twinkling Stars
+    const starsContainer = $('#stars');
+    for (let i = 0; i < 75; i++) {
+      const star = document.createElement('i');
+      const size = randomRange(1.2, 2.5);
+      star.style.left = `${randomRange(0, 100)}%`;
+      star.style.top = `${randomRange(0, 100)}%`;
+      star.style.width = `${size}px`;
+      star.style.height = `${size}px`;
+      star.style.opacity = randomRange(0.2, 0.85);
+      star.style.animationDelay = `-${randomRange(0, 8)}s`;
+      star.style.animationDuration = `${randomRange(4, 9)}s`;
+      starsContainer.appendChild(star);
+    }
+
+    // Drifting Heart Petals
+    const petalsContainer = $('#petals');
+    const petalSymbols = ['♥', '♡', '🌸', '✨', '•'];
+    for (let i = 0; i < 16; i++) {
+      const petal = document.createElement('span');
+      petal.className = 'floating-petal';
+      petal.textContent = petalSymbols[Math.floor(Math.random() * petalSymbols.length)];
+      petal.style.left = `${randomRange(2, 98)}%`;
+      petal.style.fontSize = `${randomRange(10, 18)}px`;
+      petal.style.animationDuration = `${randomRange(14, 28)}s`;
+      petal.style.animationDelay = `-${randomRange(0, 25)}s`;
+      petalsContainer.appendChild(petal);
+    }
+
+    // Interactive Heart & Sparkle Particle Bursts
+    function burst(x, y, count = 16) {
+      if (reducedMotion) return;
+      const chars = ['♥', '♡', '✨', '💖', '•'];
+      for (let i = 0; i < count; i++) {
+        const particle = document.createElement('span');
+        particle.className = 'trail-heart';
+        particle.textContent = chars[Math.floor(Math.random() * chars.length)];
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.fontSize = `${randomRange(12, 22)}px`;
+        particle.style.setProperty('--dx', `${randomRange(-140, 140)}px`);
+        particle.style.setProperty('--dy', `${randomRange(-180, -30)}px`);
+        particle.style.setProperty('--rt', `${randomRange(-60, 60)}deg`);
+        document.body.appendChild(particle);
+        particle.addEventListener('animationend', () => particle.remove());
+      }
+    }
+
+    const getCenter = element => {
+      const rect = element.getBoundingClientRect();
+      return [rect.left + rect.width / 2, rect.top + rect.height / 2];
+    };
+
+    // Smooth Cursor / Finger Heart Trail
+    let lastTrailTime = 0;
+    const createTrailParticle = (x, y) => {
+      if (reducedMotion || !body.classList.contains('ready')) return;
+      const particle = document.createElement('span');
+      particle.className = 'trail-heart';
+      particle.textContent = Math.random() < 0.6 ? '♥' : '✨';
+      particle.style.left = `${x + randomRange(-5, 5)}px`;
+      particle.style.top = `${y + randomRange(-5, 5)}px`;
+      particle.style.fontSize = `${randomRange(10, 16)}px`;
+      particle.style.setProperty('--dx', `${randomRange(-15, 15)}px`);
+      particle.style.setProperty('--dy', `${randomRange(-30, -10)}px`);
+      particle.style.setProperty('--rt', `${randomRange(-30, 30)}deg`);
+      document.body.appendChild(particle);
+      particle.addEventListener('animationend', () => particle.remove());
+    };
+
+    window.addEventListener('pointermove', event => {
+      if (event.timeStamp - lastTrailTime < 80) return;
+      lastTrailTime = event.timeStamp;
+      createTrailParticle(event.clientX, event.clientY);
+    });
+
+    // Toast Notification
+    let toastTimeout;
+    function showToast(message) {
+      const toastEl = $('#toast');
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2800);
+    }
+
+    // =========================================================================
+    // AUDIO ENGINE ("How Long Will I Love You")
+    // =========================================================================
+    const audio = $('#aud');
+    const musicPlayer = $('#music-player');
+
+    function updateMusicPlayerUI() {
+      if (audio.paused) {
+        musicPlayer.classList.remove('playing');
+        musicPlayer.title = 'Click to play How Long Will I Love You';
+      } else {
+        musicPlayer.classList.add('playing');
+        musicPlayer.title = 'Click to pause music';
+      }
+    }
+
+    function playAudioWithFade() {
+      audio.volume = 0;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          updateMusicPlayerUI();
+          // Gentle volume fade-in
+          let vol = 0;
+          const fadeInterval = setInterval(() => {
+            vol = Math.min(1, vol + 0.05);
+            audio.volume = vol;
+            if (vol >= 1) clearInterval(fadeInterval);
+          }, 80);
+        }).catch(err => {
+          console.log('Autoplay deferred until user interaction:', err);
+        });
+      }
+    }
+
+    function toggleAudio() {
+      if (audio.paused) {
+        playAudioWithFade();
+        showToast('Playing: How Long Will I Love You ♫');
+      } else {
+        audio.pause();
+        updateMusicPlayerUI();
+        showToast('Music paused ⏸');
+      }
+    }
+
+    audio.addEventListener('play', updateMusicPlayerUI);
+    audio.addEventListener('pause', updateMusicPlayerUI);
+    musicPlayer.addEventListener('click', toggleAudio);
+
+    // Try starting audio immediately on initial page load (if browser allows)
+    window.addEventListener('DOMContentLoaded', () => {
+      audio.play().then(updateMusicPlayerUI).catch(() => {
+        // Expected browser autoplay behavior; will start when OPEN is clicked
+      });
+    });
+
+    // =========================================================================
+    // INTRO LOADING & OPENING ANIMATION
+    // =========================================================================
+    const bar = $('#bar');
+    const stat = $('#stat');
+    const seal = $('#open');
+    let progress = 0;
+
+    const loadingInterval = setInterval(() => {
+      progress = Math.min(88, progress + Math.floor(randomRange(2, 6)));
+      const filled = Math.round((progress / 100) * 18);
+      bar.textContent = '█'.repeat(filled) + '░'.repeat(18 - filled) + ' ' + progress + '%';
+
+      if (progress >= 88) {
+        clearInterval(loadingInterval);
+        stat.textContent = 'Gathering all my love for you...';
+        setTimeout(() => {
+          stat.textContent = 'Ready. Come in, baby. ❤️';
+          seal.classList.add('on');
+        }, 1100);
+      }
+    }, 80);
+
+    seal.addEventListener('click', () => {
+      const [x, y] = getCenter(seal);
+      burst(x, y, 26);
+      playAudioWithFade();
+
+      $('#intro').classList.add('gone');
+      body.classList.add('ready');
+      body.classList.remove('lock');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      setTimeout(() => {
+        $('#intro').remove();
+      }, 1500);
+    });
+
+    // =========================================================================
+    // POLAROID GALLERY GENERATOR & LIGHTBOX MODAL
+    // =========================================================================
+    const ROTATIONS = [-3, 2.5, -2, 3.5, -1.8, 2];
+    const PARALLAX_SPEEDS = [0.035, -0.025, 0.04, -0.03, 0.025, -0.035];
+
+    function createPolaroidHTML(photo, index) {
+      const rot = ROTATIONS[index % ROTATIONS.length];
+      const speed = PARALLAX_SPEEDS[index % PARALLAX_SPEEDS.length];
+      return `
+        <figure class="pol rv" style="--r:${rot}deg" data-s="${speed}" data-src="${photo.src}" data-fallback="${photo.fallback}" data-cap="${photo.cap}">
+          <div class="ph">
+            <img loading="lazy" alt="${photo.cap}" src="${photo.src}" onerror="this.onerror=null; this.src='${photo.fallback}';">
+          </div>
+          <figcaption>${photo.cap}</figcaption>
+          <div class="photo-hint">tap to enlarge ♡</div>
+        </figure>
+      `;
+    }
+
+    const wall = $('#wall');
+    wall.innerHTML = PHOTOS.map(createPolaroidHTML).join('');
+
+    const lastFeatured = $('#last');
+    lastFeatured.innerHTML = createPolaroidHTML(PHOTOS[0], 0);
+
+    // Lightbox modal logic
+    const modal = $('#photo-modal');
+    const modalImg = $('#modal-img');
+    const modalCap = $('#modal-caption');
+    const modalClose = $('#modal-close');
+
+    function openModal(src, fallback, caption) {
+      modalImg.onerror = () => { modalImg.src = fallback; };
+      modalImg.src = src;
+      modalCap.textContent = caption;
+      modal.classList.add('active');
+      const [cx, cy] = [window.innerWidth / 2, window.innerHeight / 2];
+      burst(cx, cy, 14);
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    $$('.pol').forEach(card => {
+      card.addEventListener('click', () => {
+        const src = card.dataset.src;
+        const fallback = card.dataset.fallback;
+        const cap = card.dataset.cap;
+        openModal(src, fallback, cap);
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal();
+    });
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // =========================================================================
+    // SCROLL REVEALS & DYNAMIC THEMES
+    // =========================================================================
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.18 });
+
+    $$('.rv').forEach(el => revealObserver.observe(el));
+
+    function applySectionTheme(element) {
+      body.style.setProperty('--bg', element.dataset.bg);
+      body.classList.toggle('light', element.dataset.l === '1');
+    }
+
+    const themeObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && body.classList.contains('ready')) {
+          applySectionTheme(entry.target);
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+
+    $$('[data-bg]').forEach(el => themeObserver.observe(el));
+
+    // Parallax on polaroids
+    const parallaxElements = [...$$('[data-s]')];
+    let scrollScheduled = false;
+
+    if (!reducedMotion) {
+      window.addEventListener('scroll', () => {
+        if (scrollScheduled) return;
+        scrollScheduled = true;
+        requestAnimationFrame(() => {
+          scrollScheduled = false;
+          const centerY = window.innerHeight / 2;
+          parallaxElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const offset = (rect.top + rect.height / 2 - centerY) * parseFloat(el.dataset.s);
+            el.style.setProperty('--py', `${offset}px`);
+          });
+        });
+      }, { passive: true });
+    }
+
+    // Tiny discovery clicks
+    $$('[data-say]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        showToast(btn.dataset.say);
+        const [x, y] = getCenter(btn);
+        burst(x, y, 10);
+      });
+    });
+
+    $('#moon').addEventListener('click', () => {
+      showToast("P.S. The moon is pretty, but you're still prettier than anything. 🌙");
+      const [x, y] = getCenter($('#moon'));
+      burst(x, y, 14);
+    });
+
+    // =========================================================================
+    // MINI GAME ("OBJECTIVE: MAKE HER SMILE")
+    // =========================================================================
+    const GAME_OUTPUTS = {
+      s: ['CORRECT ANSWER.', "I am so truly sorry, and I mean every word. 🥺"],
+      l: ['ALSO 100% CORRECT. ❤️', "I love you more than words could ever describe."],
+      i: ['FINALLY. FULL SELF-AWARENESS.', "+10,000 XP. I really was an idiot, baby. 🫠"],
+      h: ['UNLIMITED HUGS & SNACKS UNLOCKED! 🍫', "Your favorite food, endless forehead kisses & zero arguments forever."]
+    };
+
+    $$('.opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.k;
+        const out = GAME_OUTPUTS[key];
+        const res = $('#res');
+        res.innerHTML = `${out[0]}<em>${out[1]}</em>`;
+        res.classList.remove('show');
+        void res.offsetWidth;
+        res.classList.add('show');
+
+        const [x, y] = getCenter(btn);
+        burst(x, y, 18);
+      });
+    });
+
+    // =========================================================================
+    // SECRET LOVE LETTER UNLOCK
+    // =========================================================================
+    const pwInput = $('#pw');
+    const hintToggle = $('#hint-toggle');
+
+    hintToggle.addEventListener('click', () => {
+      showToast('Hint: 190125 (Our special date ❤️)');
+    });
+
+    pwInput.addEventListener('input', () => {
+      const entered = pwInput.value.replace(/\D/g, '');
+      if (entered.length < PASSWORD.length) return;
+
+      if (entered === PASSWORD) {
+        pwInput.disabled = true;
+        pwInput.classList.add('ok');
+        $('#env').classList.add('open');
+        $('#lk').textContent = '🔓';
+
+        const [x, y] = getCenter($('#env'));
+        burst(x, y, 30);
+
+        const secretSec = $('#secret');
+        secretSec.dataset.bg = '#f3bac8';
+        secretSec.dataset.l = '1';
+        applySectionTheme(secretSec);
+        $('#hint').textContent = '';
+        hintToggle.style.display = 'none';
+
+        setTimeout(() => {
+          const afterDiv = $('#after');
+          afterDiv.hidden = false;
+          afterDiv.querySelectorAll('.rv').forEach(el => revealObserver.observe(el));
+          afterDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 1400);
+      } else {
+        pwInput.classList.remove('shake');
+        void pwInput.offsetWidth;
+        pwInput.classList.add('shake');
+        $('#hint').textContent = 'Hmm, not quite. Try our special date (190125) ❤️';
+      }
+    });
+
+    // =========================================================================
+    // THE BIG QUESTION ("WILL YOU PLEASE TALK TO ME?")
+    // =========================================================================
+    const yesBtn = $('#yes');
+    const noBtn = $('#no');
+    const ansEl = $('#ans');
+
+    yesBtn.addEventListener('click', () => {
+      const [x, y] = getCenter(yesBtn);
+      burst(x, y, 40);
+      $('#glowfx').classList.add('on');
+
+      ansEl.innerHTML = 'SHE SAID YES! ❤️🎉';
+      ansEl.style.animation = 'pop 0.8s var(--ease-bounce) both';
+
+      // Confetti shower
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          burst(randomRange(100, window.innerWidth - 100), randomRange(100, window.innerHeight - 100), 20);
+        }, i * 350);
+      }
+
+      setTimeout(() => {
+        $('#status').scrollIntoView({ behavior: 'smooth' });
+      }, 3500);
+    });
+
+    const playfulPleaList = [
+      "Are you sure? 🥺",
+      "Pretty please? With hot chocolate on top? ☕",
+      "I promise to be good! 😭",
+      "Unlimited hugs & back rubs forever? 🥺",
+      "Just one little phone call? 📱",
+      "Look how sorry I am... ❤️"
+    ];
+    let pleaIndex = 0;
+
+    noBtn.addEventListener('click', () => {
+      // Playfully change text and shake
+      noBtn.textContent = playfulPleaList[pleaIndex % playfulPleaList.length];
+      pleaIndex++;
+
+      // Make YES button grow bigger
+      const currentScale = 1 + (pleaIndex * 0.08);
+      yesBtn.style.transform = `scale(${Math.min(1.4, currentScale)})`;
+      yesBtn.style.boxShadow = `0 0 ${20 + pleaIndex * 8}px rgba(233, 120, 152, 0.7)`;
+
+      const [x, y] = getCenter(noBtn);
+      burst(x, y, 8);
+
+      const messages = [
+        "I'll keep trying...",
+        "I'm not going anywhere. ❤️",
+        "Because I really, truly love you."
+      ];
+      ansEl.innerHTML = '';
+      messages.forEach((msg, i) => {
+        setTimeout(() => {
+          ansEl.innerHTML += `<p class="rv in" style="font-size:0.8em; opacity:0.9">${msg}</p>`;
+        }, i * 1100);
+      });
+    });
+  </script>
+</body>
+</html>
